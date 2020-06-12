@@ -1,0 +1,11 @@
+input, textarea, select{
+    width: 270px !important;
+}
+.mod-user, .mod-date{
+    max-width: 270px;
+    max-height: 80px;
+}
+.mod-just{
+    max-width: 270px;
+    max-height: auto;
+}

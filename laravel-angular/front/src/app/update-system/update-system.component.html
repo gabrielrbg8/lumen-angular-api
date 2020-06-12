@@ -1,0 +1,93 @@
+<app-navbar></app-navbar>
+
+<div class="text-center alert alert-success alert-dismissible fade show" role="alert" *ngIf="successForm">
+  <p>{{messageForm}}</p>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" [routerLink]="['']">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="text-center alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorAttributes">
+  <p>{{messageForm}}</p>
+  <button (click)="formReset()" type="button" class="close" data-dismiss="alert" aria-label="Close"
+    [routerLink]="['/create-system']">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<ngx-loading [show]="isLoading" [config]="{ 
+  backdropBackgroundColour: 'rgba(255,255,255,0.3)', backdropBorderRadius: '10px',
+  primaryColour: '#1f1829', secondaryColour: '#1f1829', tertiaryColour: '#1f1829' }"></ngx-loading>
+
+<div class="d-flex justify-content-around align-items-center">
+  <form *ngIf="existsData" [formGroup]="f" novalidate
+    class="py-4 d-flex text-center justify-content-center flex-column align-items-center ">
+    <div class="form-group">
+      <label for="exampleInputText">Descrição</label>
+      <input [(ngModel)]="jsonSystem.data.description" maxlength="100" type="text" class="form-control" formControlName="description"
+        id="exampleInputText">
+    </div>
+    <div class="form-group">
+      <div class="form-group" [ngClass]="{'has-success': f.controls['email'].valid,
+    'has-error': f.controls['email'].invalid && (f.controls['email'].touched || f.controls['email'].dirty)}">
+        <label for="exampleInputEmail1">Email</label>
+        <input [(ngModel)]="jsonSystem.data.email" maxlength="100" type="email" class="form-control" formControlName="email"
+          id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
+        <span *ngIf="f.controls['email'].valid" class="glyphicon glyphicon-ok form-control-feedback"
+          aria-hidden="true"></span>
+        <span *ngIf="f.controls['email'].invalid && (f.controls['email'].touched || f.controls['email'].dirty)">
+          <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+          <span class="text-danger">E-mail inválido.</span>
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Sigla</label>
+      <input [(ngModel)]="jsonSystem.data.initials" maxlength="10" type="text" formControlName="initials" class="form-control"
+        id="exampleInputPassword1" placeholder="Sigla">
+    </div>
+
+    <div class="form-group">
+      <label for="exampleInputPassword1">URL</label>
+      <input [(ngModel)]="jsonSystem.data.url" maxlength="50" type="text" formControlName="url" class="form-control"
+        id="exampleInputPassword2" placeholder="URL">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Justificação</label>
+      <textarea maxlength="500" type="text" formControlName="justification" class="form-control"
+        id="exampleInputPassword2" placeholder="Justifique a alteração"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Status</label>
+      <select [(ngModel)]="jsonSystem.data.status" class="form-control" formControlName="status" id="exampleFormControlSelect1">
+        <option value="ATIVO">ATIVO</option>
+        <option value="INATIVO">INATIVO</option>
+
+      </select>
+    </div>
+    <div class="form-group d-flex justify-content-between">
+      <a class="btn btn-danger" [routerLink]="['']">Cancelar</a>
+      <button type="submit" class="btn btn-primary" (click)="onSubmit(systemId)">Salvar</button>
+    </div>
+  </form>
+
+  <div class="container-info-mod">
+    <div *ngIf="!noMod">
+      <div class="mod-date">
+        <h4>Data da última alteração</h4>
+        <p>{{jsonLast.data.date}}</p>
+      </div>
+      <div class="mod-user">
+        <h4>Último usuário a alterar</h4>
+        <p>{{jsonLast.data.user}}</p>
+      </div>
+      <div class="mod-just">
+        <h4>Justificação da última alteração</h4>
+        <p>{{jsonLast.data.justification}}</p>
+      </div>
+    </div>
+    <div *ngIf="noMod">
+      <p>Nenhuma alteração foi feita nesse sistema.</p>
+    </div>
+  </div>
+</div>

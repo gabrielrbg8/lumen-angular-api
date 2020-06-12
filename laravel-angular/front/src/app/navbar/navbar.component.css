@@ -1,0 +1,21 @@
+#nav-bar-header{
+    background-color: #1f1829;
+}
+
+.nav-link{
+    color: white !important;
+}
+.nav-item:hover{
+    background: white;
+    border-radius: 10px;
+}
+.nav-item:hover > .nav-link{
+    color: #1f1829 !important;
+}
+#dropdown-header{
+    align-self: flex-end;
+}
+#navbarNavDropdown{
+    display: flex !important;
+    justify-content: flex-end !important;
+}

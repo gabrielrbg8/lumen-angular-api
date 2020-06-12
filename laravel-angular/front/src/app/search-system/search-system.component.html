@@ -1,0 +1,107 @@
+<app-navbar></app-navbar>
+<form [formGroup]="f" novalidate class="py-4 d-flex text-center justify-content-center flex-wrap align-items-center">
+  <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-success': f.controls['email'].valid,
+    'has-error': f.controls['email'].invalid && (f.controls['email'].touched || f.controls['email'].dirty)}">
+      <label for="exampleInputEmail1">Email</label>
+      <input maxlength="100" type="email" class="form-control" formControlName="email" id="exampleInputEmail1"
+        aria-describedby="emailHelp" placeholder="Email">
+      <span *ngIf="f.controls['email'].valid" class="glyphicon glyphicon-ok form-control-feedback"
+        aria-hidden="true"></span>
+      <span *ngIf="f.controls['email'].invalid && (f.controls['email'].touched || f.controls['email'].dirty)">
+        <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+        <span class="text-danger">E-mail inválido.</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInputText">Descrição</label>
+    <input maxlength="100" type="text" [(ngModel)]="description" class="form-control" formControlName="description"
+      id="exampleInputText" placeholder="Descrição">
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInputText">Sigla</label>
+    <input maxlength="10" type="text" [(ngModel)]="initials" class="form-control" formControlName="description"
+      id="exampleInputText" placeholder="Descrição">
+  </div>
+
+  <div class="form-group d-flex justify-content-center align-self-end">
+
+    <button [disabled]="f.invalid" type="submit" class="btn btn-primary" (click)="onSubmit()">Procurar</button>
+    <button type="button" class="btn btn-warning" (click)="formReset()">Limpar</button>
+    <button type="button" class="btn btn-success" (click)="newSystem()">Novo</button>
+
+  </div>
+
+</form>
+
+<div class="text-center alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorAttributes">
+  <p>{{errorAttributesMessage}}</p>
+  <button (click)="formReset()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="my-container">
+  <ngx-loading [show]="isLoading" [config]="{ 
+      backdropBackgroundColour: 'rgba(255,255,255,0.3)', backdropBorderRadius: '10px',
+      primaryColour: '#1f1829', secondaryColour: '#1f1829', tertiaryColour: '#1f1829' }"></ngx-loading>
+</div>
+<div *ngIf="existsData" class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Sigla</th>
+        <th>Email</th>
+        <th>URL</th>
+        <th>STATUS</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <div class="my-container">
+
+
+        <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '3px' }">
+        </ngx-loading>
+
+      </div>
+      <tr *ngFor="let item of systems | paginate: { itemsPerPage: counter, currentPage: pag } ">
+
+        <td>
+          {{item.description}}
+        </td>
+        <td>
+          {{item.initials}}
+        </td>
+        <td>
+          {{item.email}}
+        </td>
+        <td>
+          {{item.url}}
+        </td>
+        <td>
+          {{item.status}}
+        </td>
+        <td>
+          <a type="button" class="btn btn-warning" (click)="editSystem(item.id)">
+            <svg class="bi bi-pencil-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+              <path fill-rule="evenodd"
+                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+            </svg>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="text-right">
+    <pagination-controls (pageChange)="pag = $event" maxSize="10" directionLinks="true">
+    </pagination-controls>
+
+  </div>
+</div>

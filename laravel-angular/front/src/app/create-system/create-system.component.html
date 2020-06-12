@@ -1,0 +1,62 @@
+<app-navbar></app-navbar>
+<div class="text-center alert alert-success alert-dismissible fade show" role="alert" *ngIf="successForm">
+  <p>{{messageForm}}</p>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" [routerLink]="['']"  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="text-center alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorAttributes">
+  <p>{{messageForm}}</p>
+  <button (click)="formReset()" type="button" class="close" data-dismiss="alert" aria-label="Close" [routerLink]="['/create-system']" >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<ngx-loading [show]="isLoading" [config]="{ 
+  backdropBackgroundColour: 'rgba(255,255,255,0.3)', backdropBorderRadius: '10px',
+  primaryColour: '#1f1829', secondaryColour: '#1f1829', tertiaryColour: '#1f1829' }"
+></ngx-loading>
+
+<form [formGroup]="f" novalidate class="py-4 d-flex text-center justify-content-center flex-column align-items-center ">
+  <div class="form-group">
+    <label for="exampleInputText">Descrição</label>
+    <input maxlength="100" type="text" class="form-control" formControlName="description" id="exampleInputText" placeholder="Descrição">
+  </div>
+  <div class="form-group">
+    <div class="form-group" [ngClass]="{'has-success': f.controls['email'].valid,
+    'has-error': f.controls['email'].invalid && (f.controls['email'].touched || f.controls['email'].dirty)}">
+    <label for="exampleInputEmail1">Email</label>
+    <input maxlength="100" type="email" class="form-control" formControlName="email" id="exampleInputEmail1"
+      aria-describedby="emailHelp" placeholder="Email">
+    <span *ngIf="f.controls['email'].valid" class="glyphicon glyphicon-ok form-control-feedback"
+      aria-hidden="true"></span>
+    <span *ngIf="f.controls['email'].invalid && (f.controls['email'].touched || f.controls['email'].dirty)">
+      <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+      <span class="text-danger">E-mail inválido.</span>
+    </span>
+  </div>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Sigla</label>
+    <input maxlength="10" type="text" formControlName="initials" class="form-control" id="exampleInputPassword1" placeholder="Sigla">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">URL</label>
+    <input maxlength="50" type="text" formControlName="url" class="form-control" id="exampleInputPassword2" placeholder="URL">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Status</label>
+    <select class="form-control" formControlName="status" id="exampleFormControlSelect1">
+      <option value="ATIVO">ATIVO</option>
+      <option value="INATIVO">INATIVO</option>
+
+    </select>
+  </div>
+  <div class="form-group d-flex justify-content-between">
+    <a class="btn btn-danger" [routerLink]="['']">Cancelar</a>
+    <button [disabled]="f.invalid" type="submit" class="btn btn-primary" (click)="onSubmit()">Salvar</button>
+  </div>
+
+
+</form>
